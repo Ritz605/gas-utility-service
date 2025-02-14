@@ -27,9 +27,13 @@ class ServiceRequestFileSerializer(serializers.ModelSerializer):
 
 
 class ServiceRequestSerializer(serializers.ModelSerializer):
+    customer = serializers.ReadOnlyField(source='customer.username')  # Customer is read-only, sourced from the username
+
     class Meta:
         model = ServiceRequest
-        fields = '__all__'
+        fields = ['id', 'customer', 'title', 'description', 'status', 'created_at']
+        read_only_fields = ['customer', 'status', 'created_at']  # Ensure these are not expected in the payload
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
